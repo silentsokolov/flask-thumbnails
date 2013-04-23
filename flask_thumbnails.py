@@ -3,6 +3,17 @@ from PIL import Image, ImageOps
 import errno
 
 
+def _get_name(name, fm, *args):
+    s = name
+
+    for v in args:
+        if v:
+            s += '_%s' % v
+    s += fm
+
+    return s
+
+
 class Thumbnail(object):
     def __init__(self, app=None):
         if app is not None:
@@ -13,6 +24,7 @@ class Thumbnail(object):
 
     def init_app(self, app):
         # TODO: add default path app directory
+        self.app = app
         app.config.setdefault('UPLOAD_FOLDER', None)
 
         app.jinja_env.filters['thumbnail'] = self.thumbnail
@@ -27,13 +39,13 @@ class Thumbnail(object):
         :param quality: JPEG quality 1-100
         :return: :thumb_url:
         """
-        x, y = [int(x) for x in size.split('x')]
+        width, height = [int(x) for x in size.split('x')]
 
         url_path, img_name = os.path.split(img_url)
 
-        img_name, fm = os.path.splitext(img_name)
+        name, fm = os.path.splitext(img_name)
 
-        miniature = img_name + '_' + size + fm
+        miniature = _get_name(name, fm, size, crop, bg, quality)
 
         original_filename = os.path.join(self.app.config['UPLOAD_FOLDER'], url_path, img_name)
         thumb_filename = os.path.join(self.app.config['UPLOAD_FOLDER'], 'cache', url_path, miniature)
@@ -47,22 +59,21 @@ class Thumbnail(object):
             return thumb_url
 
         elif not os.path.exists(thumb_filename):
-            thumb_size = (x, y)
-            try:
-                image = Image.open(original_filename)
-                #image = image.convert('RGBA')
-                if crop == 'fit':
-                    size_img = ImageOps.fit(image, thumb_size, Image.ANTIALIAS)
-                else:
-                    size_img = image.copy()
+            thumb_size = (width, height)
+            image = Image.open(original_filename)
+            #image = image.convert('RGBA')
+            if crop == 'fit':
+                img = ImageOps.fit(image, thumb_size, Image.ANTIALIAS)
+            else:
+                img = image.copy()
+                img.thumbnail((width, height), Image.ANTIALIAS)
 
-                if bg:
-                    size_img = self._bg_square(size_img, bg)
+            if bg:
+                img = self._bg_square(img, bg)
 
-                size_img.save(thumb_filename, image.format, quality=quality)
-                return thumb_url
-            except IOError:
-                raise IOError
+            img.save(thumb_filename, image.format, quality=quality)
+
+            return thumb_url
 
     def _bg_square(self, img, color=0xff):
         size = (max(img.size),) * 2
@@ -79,4 +90,3 @@ class Thumbnail(object):
         except OSError as e:
             if e.errno != errno.EEXIST:
                 raise
-
