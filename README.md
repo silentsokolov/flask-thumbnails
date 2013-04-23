@@ -16,3 +16,8 @@ Install:
     app = Flask(__name__)
 
     thumb = Thumbnail(app)
+
+Use in Jinja2 template:
+
+    {{ 'sc.jpg'|thumbnail('200x200') }}
+    {{ object_img|thumbnail('200x200', crop='fit') }}
