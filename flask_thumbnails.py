@@ -1,5 +1,6 @@
 import os
 from PIL import Image, ImageOps
+import errno
 
 
 class Thumbnail(object):
@@ -37,9 +38,12 @@ class Thumbnail(object):
         full_path = os.path.join(self.app.config['UPLOAD_FOLDER'], url_path)
 
         original_filename = os.path.join(full_path, img_name)
-        thumb_filename = os.path.join(full_path, miniature)
+        thumb_filename = os.path.join(full_path, 'cache', miniature)
 
-        thumb_url = os.path.join(url_path, miniature)
+        # create folders
+        self._get_path(thumb_filename)
+
+        thumb_url = os.path.join(url_path, 'cache', miniature)
 
         if os.path.exists(thumb_filename):
             return thumb_url
@@ -55,17 +59,26 @@ class Thumbnail(object):
                     size_img = image.copy()
 
                 if bg:
-                    size_img = self.bg_square(size_img, bg)
+                    size_img = self._bg_square(size_img, bg)
 
                 size_img.save(thumb_filename, image.format, quality=quality)
                 return thumb_url
             except IOError:
                 raise IOError
 
-    @staticmethod
-    def bg_square(img, color=0xff):
+    def _bg_square(self, img, color=0xff):
         size = (max(img.size),) * 2
         layer = Image.new('L', size, color)
         layer.paste(img, tuple(map(lambda x: (x[0] - x[1]) / 2, zip(size, img.size))))
         return layer
+
+    def _get_path(self, full_path):
+        directory = os.path.dirname(full_path)
+
+        try:
+            if not os.path.exists(full_path):
+                os.makedirs(directory)
+        except OSError as e:
+            if e.errno != errno.EEXIST:
+                raise
 
