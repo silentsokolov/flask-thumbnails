@@ -35,15 +35,13 @@ class Thumbnail(object):
 
         miniature = img_name + '_' + size + fm
 
-        full_path = os.path.join(self.app.config['UPLOAD_FOLDER'], url_path)
-
-        original_filename = os.path.join(full_path, img_name)
-        thumb_filename = os.path.join(full_path, 'cache', miniature)
+        original_filename = os.path.join(self.app.config['UPLOAD_FOLDER'], url_path, img_name)
+        thumb_filename = os.path.join(self.app.config['UPLOAD_FOLDER'], 'cache', url_path, miniature)
 
         # create folders
         self._get_path(thumb_filename)
 
-        thumb_url = os.path.join(url_path, 'cache', miniature)
+        thumb_url = os.path.join('cache', url_path, miniature)
 
         if os.path.exists(thumb_filename):
             return thumb_url
