@@ -60,7 +60,10 @@ class Thumbnail(object):
 
         elif not os.path.exists(thumb_filename):
             thumb_size = (width, height)
-            image = Image.open(original_filename)
+            try:
+                image = Image.open(original_filename)
+            except IOError:
+                return None
             #image = image.convert('RGBA')
             if crop == 'fit':
                 img = ImageOps.fit(image, thumb_size, Image.ANTIALIAS)
