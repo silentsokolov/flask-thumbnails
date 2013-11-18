@@ -1,0 +1,1 @@
+include LICENSE CHANGES README.md flask_thumbnails/*.py
