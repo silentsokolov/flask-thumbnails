@@ -1,3 +1,5 @@
+[![Build Status](https://drone.io/github.com/SilentSokolov/flask-thumbnails/status.png)](https://drone.io/github.com/SilentSokolov/flask-thumbnails/latest)
+
 Flask-thumbnails
 ===============
 
