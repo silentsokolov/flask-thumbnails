@@ -10,6 +10,7 @@ env:
 
 install:
   - pip install $FLASK
+  - pip install pillow
 
 script:
   - nosetests flask_thumbnails/tests.py

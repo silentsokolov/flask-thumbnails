@@ -46,7 +46,7 @@ Use in Jinja2 template:
 Options
 ~~~~~~~
 
-``crop='fit'`` returns a sized and cropped version of the image, cropped to the requested aspect ratio and size, [read more](http://pillow.readthedocs.org/en/latest/reference/ImageOps.html#PIL.ImageOps.fit).
+``crop='fit'`` returns a sized and cropped version of the image, cropped to the requested aspect ratio and size, `read more <http://pillow.readthedocs.org/en/latest/reference/ImageOps.html#PIL.ImageOps.fit>`_.
 
 ``quality=XX`` changes the quality of the output JPEG thumbnail, default ``85``.
 
