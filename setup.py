@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='Flask-thumbnails',
-    version='0.2',
+    version='0.2.1',
     url='https://github.com/SilentSokolov/flask-thumbnails',
     license='MIT',
     author='Dmitriy Sokolov',
@@ -14,6 +14,6 @@ setup(
     platforms='any',
     install_requires=[
         'Flask',
-        'Pillow==2.2.1',
+        'Pillow==2.6.0',
     ],
 )
