@@ -1,16 +1,16 @@
 import os
 import errno
+
 try:
     from PIL import Image, ImageOps
 except ImportError:
-    raise RuntimeError('Image module of PIL needs to be installed')
+    raise RuntimeError('Pillow not installed')
 
 
 class Thumbnail(object):
     def __init__(self, app=None):
         if app is not None:
-            self.app = app
-            self.init_app(self.app)
+            self.init_app(app)
         else:
             self.app = None
 
@@ -32,7 +32,6 @@ class Thumbnail(object):
 
     def thumbnail(self, img_url, size, crop=None, bg=None, quality=85):
         """
-
         :param img_url: url img - '/assets/media/summer.jpg'
         :param size: size return thumb - '100x100'
         :param crop: crop return thumb - 'fit' or None

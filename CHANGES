@@ -1,3 +1,6 @@
+0.2.2 (2017-05-06)
+    - Removed Pillow from install_requires
+
 0.2.1 (2015-03-15)
     - Fixed Pillow version
 

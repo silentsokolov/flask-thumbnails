@@ -37,7 +37,7 @@ Example usage
 
 Use in Jinja2 template:
 
-::
+ .. code:: html
 
     <img src="{{ 'image.jpg'|thumbnail('200x200') }}" alt="" />
     <img src="{{ 'image.jpg'|thumbnail('200x200', crop='fit', quality=100) }}" alt="" />
