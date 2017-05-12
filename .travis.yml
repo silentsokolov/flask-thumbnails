@@ -2,17 +2,21 @@ language: python
 
 python:
   - 2.7
+  - 3.4
+  - 3.5
+  - 3.6
 
 env:
+  - FLASK="Flask==0.12"
+  - FLASK="Flask==0.11"
   - FLASK="Flask==0.10"
-  - FLASK="Flask==0.9"
 
 install:
   - pip install $FLASK
   - pip install pillow
 
 script:
-  - nosetests flask_thumbnails/tests.py
+  - python setup.py test
 
 branches:
   only:

@@ -1,104 +1,157 @@
+# -*- coding: utf-8 -*-
+
+from __future__ import unicode_literals
+
 import os
-import errno
+
+from io import BytesIO
 
 try:
     from PIL import Image, ImageOps
 except ImportError:
-    raise RuntimeError('Pillow not installed')
+    raise RuntimeError('Get Pillow at https://pypi.python.org/pypi/Pillow '
+                       'or run command "pip install Pillow".')
+
+from .utils import import_from_string, generate_filename
+
+__version__ = '0.3.0'
 
 
 class Thumbnail(object):
-    def __init__(self, app=None):
+    def __init__(self, app=None, configure_jinja=True):
+        self.app = app
+        self._configure_jinja = configure_jinja
+        self._default_root_directory = 'media'
+        self._default_thumbnail_directory = 'media'
+        self._default_root_url = '/'
+        self._default_thumbnail_root_url = '/'
+        self._default_format = 'JPEG'
+        self._default_storage_backend = 'flask_thumbnails.storage_backends.FilesystemStorageBackend'
+
         if app is not None:
             self.init_app(app)
-        else:
-            self.app = None
 
     def init_app(self, app):
-        self.app = app
+        app.thumbnail_instance = self
+        if not hasattr(app, 'extensions'):
+            app.extensions = {}
+        app.extensions['thumbnail'] = self
 
-        if not self.app.config.get('MEDIA_FOLDER', None):
-            raise RuntimeError('You\'re using the flask-thumbnail app '
-                               'without having set the required MEDIA_FOLDER setting.')
+        app.config.setdefault('THUMBNAIL_MEDIA_ROOT', self._default_root_directory)
+        app.config.setdefault('THUMBNAIL_MEDIA_THUMBNAIL_ROOT', self._default_thumbnail_directory)
+        app.config.setdefault('THUMBNAIL_MEDIA_URL', self._default_root_url)
+        app.config.setdefault('THUMBNAIL_MEDIA_THUMBNAIL_URL', self._default_thumbnail_root_url)
+        app.config.setdefault('THUMBNAIL_STORAGE_BACKEND', self._default_storage_backend)
+        app.config.setdefault('THUMBNAIL_DEFAUL_FORMAT', self._default_format)
 
-        if self.app.config.get('MEDIA_THUMBNAIL_FOLDER', None) and not self.app.config.get('MEDIA_THUMBNAIL_URL', None):
-            raise RuntimeError('You\'re set MEDIA_THUMBNAIL_FOLDER setting, need set and MEDIA_THUMBNAIL_URL setting.')
+        if self._configure_jinja:
+            app.jinja_env.filters.update(
+                thumbnail=self.get_thumbnail,
+            )
 
-        app.config.setdefault('MEDIA_THUMBNAIL_FOLDER', os.path.join(self.app.config['MEDIA_FOLDER'], ''))
-        app.config.setdefault('MEDIA_URL', '/')
-        app.config.setdefault('MEDIA_THUMBNAIL_URL', os.path.join(self.app.config['MEDIA_URL'], ''))
+    @property
+    def root_directory(self):
+        path = self.app.config['THUMBNAIL_MEDIA_ROOT']
 
-        app.jinja_env.filters['thumbnail'] = self.thumbnail
+        if os.path.isabs(path):
+            return path
+        else:
+            return os.path.join(self.app.root_path, path)
 
-    def thumbnail(self, img_url, size, crop=None, bg=None, quality=85):
-        """
-        :param img_url: url img - '/assets/media/summer.jpg'
-        :param size: size return thumb - '100x100'
-        :param crop: crop return thumb - 'fit' or None
-        :param bg: tuple color or None - (255, 255, 255, 0)
-        :param quality: JPEG quality 1-100
-        :return: :thumb_url:
-        """
-        width, height = [int(x) for x in size.split('x')]
-        url_path, img_name = os.path.split(img_url)
-        name, fm = os.path.splitext(img_name)
+    @property
+    def thumbnail_directory(self):
+        path = self.app.config['THUMBNAIL_MEDIA_THUMBNAIL_ROOT']
 
-        miniature = self._get_name(name, fm, size, crop, bg, quality)
+        if os.path.isabs(path):
+            return path
+        else:
+            return os.path.join(self.app.root_path, path)
 
-        original_filename = os.path.join(self.app.config['MEDIA_FOLDER'], url_path, img_name)
-        thumb_filename = os.path.join(self.app.config['MEDIA_THUMBNAIL_FOLDER'], url_path, miniature)
+    @property
+    def root_url(self):
+        return self.app.config['THUMBNAIL_MEDIA_URL']
 
-        # create folders
-        self._get_path(thumb_filename)
+    @property
+    def thumbnail_url(self):
+        return self.app.config['THUMBNAIL_MEDIA_THUMBNAIL_URL']
 
-        thumb_url = os.path.join(self.app.config['MEDIA_THUMBNAIL_URL'], url_path, miniature)
+    @property
+    def storage_backend(self):
+        return self.app.config['THUMBNAIL_STORAGE_BACKEND']
 
-        if os.path.exists(thumb_filename):
-            return thumb_url
+    def get_storage_backend(self):
+        backend_class = import_from_string(self.storage_backend)
+        return backend_class(app=self.app)
 
-        elif not os.path.exists(thumb_filename):
-            thumb_size = (width, height)
-            try:
-                image = Image.open(original_filename)
-            except IOError:
-                return None
+    def get_thumbnail(self, original, size, **options):
+        storage = self.get_storage_backend()
+        crop = options.get('crop', 'fit')
+        background = options.get('background')
+        quality = options.get('quality', 90)
+        thumbnail_size = [int(x) for x in size.split('x')]
 
-            if crop == 'fit':
-                img = ImageOps.fit(image, thumb_size, Image.ANTIALIAS)
-            else:
-                img = image.copy()
-                img.thumbnail((width, height), Image.ANTIALIAS)
+        original_path, original_filename = os.path.split(original)
+        thumbnail_filename = generate_filename(original_filename, size, crop, background, quality)
 
-            if bg:
-                img = self._bg_square(img, bg)
+        original_filepath = os.path.join(self.root_directory, original_path, original_filename)
+        thumbnail_filepath = os.path.join(self.thumbnail_directory, original_path, thumbnail_filename)
+        thumbnail_url = os.path.join(self.thumbnail_url, original_path, thumbnail_filename)
 
-            img.save(thumb_filename, image.format, quality=quality)
+        if storage.exists(thumbnail_filepath):
+            return thumbnail_url
 
-            return thumb_url
-
-    @staticmethod
-    def _bg_square(img, color=0xff):
-        size = (max(img.size),) * 2
-        layer = Image.new('L', size, color)
-        layer.paste(img, tuple(map(lambda x: (x[0] - x[1]) / 2, zip(size, img.size))))
-        return layer
-
-    @staticmethod
-    def _get_path(full_path):
-        directory = os.path.dirname(full_path)
-
+        image = Image.open(BytesIO(storage.read(original_filepath)))
         try:
-            if not os.path.exists(full_path):
-                os.makedirs(directory)
-        except OSError as e:
-            if e.errno != errno.EEXIST:
-                raise
+            image.load()
+        except (IOError, OSError):
+            self.app.logger.warning('Thumbnail not load image: %s', original_filepath)
+            return thumbnail_url
 
-    @staticmethod
-    def _get_name(name, fm, *args):
-        for v in args:
-            if v:
-                name += '_%s' % v
-        name += fm
+        image = self._create_thumbnail(image, thumbnail_size, crop)
 
-        return name
+        raw_data = self.get_raw_data(image, **options)
+        storage.save(thumbnail_filepath, raw_data)
+
+        return thumbnail_url
+
+    def get_raw_data(self, image, **options):
+        data = {
+            'format': self._get_format(image, **options),
+            'quality': options.get('quality', 90),
+        }
+
+        _file = BytesIO()
+        image.save(_file, **data)
+        return _file.getvalue()
+
+    def get_colormode(self, image, colormode='RGB'):
+        if colormode == 'RGB':
+            if image.mode == 'RGBA':
+                return image
+            if image.mode == 'LA':
+                return image.convert('RGBA')
+            return image.convert(colormode)
+
+        if colormode == 'GRAY':
+            return image.convert('L')
+
+        return image.convert(colormode)
+
+    def _get_format(self, image, **options):
+        if options.get('format'):
+            return options.get('format')
+        if image.format:
+            return image.format
+
+        return self.app.config['THUMBNAIL_DEFAUL_FORMAT']
+
+    def _create_thumbnail(self, image, size, crop):
+        if crop == 'fit':
+            image = ImageOps.fit(image, size, Image.ANTIALIAS)
+        else:
+            image = image.copy()
+            image.thumbnail(size, resample=Image.ANTIALIAS)
+
+        image = self.get_colormode(image)
+
+        return image

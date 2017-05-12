@@ -1,3 +1,6 @@
+0.3.0 (dev)
+    - Add custom thumbnail storage
+
 0.2.2 (2017-05-06)
     - Removed Pillow from install_requires
 
