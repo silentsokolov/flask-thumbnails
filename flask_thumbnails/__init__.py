@@ -14,7 +14,7 @@ except ImportError:
 
 from .utils import import_from_string, generate_filename
 
-__version__ = '0.3.0'
+__version__ = '1.0.0'
 
 
 class Thumbnail(object):
@@ -124,7 +124,8 @@ class Thumbnail(object):
         image.save(_file, **data)
         return _file.getvalue()
 
-    def get_colormode(self, image, colormode='RGB'):
+    @staticmethod
+    def colormode(image, colormode='RGB'):
         if colormode == 'RGB':
             if image.mode == 'RGBA':
                 return image
@@ -137,6 +138,14 @@ class Thumbnail(object):
 
         return image.convert(colormode)
 
+    @staticmethod
+    def background(original_image, color=0xff):
+        size = (max(original_image.size),) * 2
+        image = Image.new('L', size, color)
+        image.paste(original_image, tuple(map(lambda x: (x[0] - x[1]) / 2, zip(size, original_image.size))))
+
+        return image
+
     def _get_format(self, image, **options):
         if options.get('format'):
             return options.get('format')
@@ -145,13 +154,16 @@ class Thumbnail(object):
 
         return self.app.config['THUMBNAIL_DEFAUL_FORMAT']
 
-    def _create_thumbnail(self, image, size, crop):
+    def _create_thumbnail(self, image, size, crop, background=None):
         if crop == 'fit':
             image = ImageOps.fit(image, size, Image.ANTIALIAS)
         else:
             image = image.copy()
             image.thumbnail(size, resample=Image.ANTIALIAS)
 
-        image = self.get_colormode(image)
+        if background is not None:
+            image = self.background(image)
+
+        image = self.colormode(image)
 
         return image

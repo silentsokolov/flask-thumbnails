@@ -85,3 +85,9 @@ If you want to store the thumbnail in a folder other than the ``THUMBNAIL_MEDIA_
     app.config['THUMBNAIL_MEDIA_THUMBNAIL_URL'] = '/media/cache/'
     app.config['THUMBNAIL_STORAGE_BACKEND'] = 'flask_thumbnails.storage_backends.FilesystemStorageBackend'
     app.config['THUMBNAIL_DEFAUL_FORMAT'] = 'JPEG'
+
+
+Migrate 0.X to 1.X
+---------------
+
+Since version 1.X all settings have a prefix ``THUMBNAIL_``. Example: ``MEDIA_ROOT`` -> ``THUMBNAIL_MEDIA_ROOT``.
