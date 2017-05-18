@@ -1,5 +1,8 @@
 .. image:: https://travis-ci.org/silentsokolov/flask-thumbnails.svg?branch=master
-    :target: https://travis-ci.org/silentsokolov/flask-thumbnails
+   :target: https://travis-ci.org/silentsokolov/flask-thumbnails
+
+.. image:: https://codecov.io/gh/silentsokolov/flask-thumbnails/branch/master/graph/badge.svg
+   :target: https://codecov.io/gh/silentsokolov/flask-thumbnails
 
 flask-thumbnails
 ================

@@ -33,8 +33,13 @@ class Thumbnail(object):
 
     def init_app(self, app):
         app.thumbnail_instance = self
+
         if not hasattr(app, 'extensions'):
             app.extensions = {}
+
+        if 'thumbnail' in app.extensions:
+            raise RuntimeError('Flask-thumbnail extension already initialized')
+
         app.extensions['thumbnail'] = self
 
         app.config.setdefault('THUMBNAIL_MEDIA_ROOT', self._default_root_directory)

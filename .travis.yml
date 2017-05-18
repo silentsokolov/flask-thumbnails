@@ -14,10 +14,14 @@ env:
 install:
   - pip install $FLASK
   - pip install pillow
-
-script:
-  - python setup.py test
+  - pip install codecov
 
 branches:
   only:
     - master
+
+script:
+  - coverage run --omit='setup.py' --omit='tests/*' --source='.' setup.py test
+
+after_success:
+  - codecov
