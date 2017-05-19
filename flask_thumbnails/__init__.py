@@ -159,7 +159,7 @@ class Thumbnail(object):
 
         return self.app.config['THUMBNAIL_DEFAUL_FORMAT']
 
-    def _create_thumbnail(self, image, size, crop, background=None):
+    def _create_thumbnail(self, image, size, crop='fit', background=None):
         if crop == 'fit':
             image = ImageOps.fit(image, size, Image.ANTIALIAS)
         else:

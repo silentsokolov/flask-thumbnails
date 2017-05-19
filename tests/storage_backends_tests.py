@@ -37,7 +37,3 @@ class FilesystemStorageBackendTestCase(unittest.TestCase):
 
     def tearDown(self):
         self.tmp_file.close()
-
-
-if __name__ == '__main__':
-    unittest.main()
