@@ -13,14 +13,18 @@ A simple extension to create a thumbs for the Flask
 Installation
 ------------
 
-Install with ``pip``:
+Use your favorite Python package manager to install the app from PyPI, e.g.
 
-Run ``pip install git+https://github.com/SilentSokolov/flask-thumbnails.git``
+Example:
+
+``pip install flask-thumbnails``
+
 
 Add ``Thumbnail`` to your extension file:
 
 .. code:: python
 
+    from flask import Flask
     from flask_thumbnails import Thumbnail
 
     app = Flask(__name__)

@@ -1,5 +1,7 @@
 1.0.0 (dev)
     - Add custom thumbnail storage
+    - Support python 3.4+
+    - Test code
 
 0.2.2 (2017-05-06)
     - Removed Pillow from install_requires
