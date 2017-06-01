@@ -32,6 +32,8 @@ class Thumbnail(object):
             self.init_app(app)
 
     def init_app(self, app):
+        if self.app is None:
+            self.app = app
         app.thumbnail_instance = self
 
         if not hasattr(app, 'extensions'):
