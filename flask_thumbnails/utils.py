@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 
 import os
+import sys
 import importlib
 
 
@@ -28,7 +29,12 @@ def generate_filename(original_filename, *options):
     return name
 
 def parse_size(size):
-    if isinstance(size, (int, long)):
+    if sys.version_info < (3,):
+        integer_types = (int, long)
+    else:
+        integer_types = (int,)
+        
+    if isinstance(size, integer_types):
         # If the size parameter is a single number, assume square aspect.
         return [size, size]
 
