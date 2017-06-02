@@ -26,3 +26,12 @@ def generate_filename(original_filename, *options):
     name += ext
 
     return name
+
+def parse_size(size):
+    thumbnail_size = [int(x) for x in size.split('x')]
+
+    if len(thumbnail_size) == 1:
+        # If the size parameter only contains a single integer, assume square aspect.
+        thumbnail_size.append(thumbnail_size[0])
+
+    return thumbnail_size
