@@ -26,3 +26,6 @@ class UtilsTestCase(unittest.TestCase):
 
         name = parse_size('200')
         self.assertEqual(name, [200,200])
+
+        name = parse_size(200)
+        self.assertEqual(name, [200,200])
