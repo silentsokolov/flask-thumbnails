@@ -12,7 +12,7 @@ except ImportError:
     raise RuntimeError('Get Pillow at https://pypi.python.org/pypi/Pillow '
                        'or run command "pip install Pillow".')
 
-from .utils import import_from_string, generate_filename, parse_size
+from .utils import import_from_string, generate_filename, parse_size, aspect_to_string
 
 __version__ = '1.0.0'
 
@@ -98,7 +98,7 @@ class Thumbnail(object):
         thumbnail_size = parse_size(size)
 
         original_path, original_filename = os.path.split(original)
-        thumbnail_filename = generate_filename(original_filename, size, crop, background, quality)
+        thumbnail_filename = generate_filename(original_filename, aspect_to_string(size), crop, background, quality)
 
         original_filepath = os.path.join(self.root_directory, original_path, original_filename)
         thumbnail_filepath = os.path.join(self.thumbnail_directory, original_path, thumbnail_filename)

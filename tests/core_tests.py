@@ -127,6 +127,6 @@ class CoreTestCase(unittest.TestCase):
                 image = Image.new('RGB', (100, 100), 'black')
                 image.save(original.name)
 
-                thumb_url = self.thumbnail.get_thumbnail(os.path.basename(original.name), '50x50')
+                thumb_url = self.thumbnail.get_thumbnail(os.path.basename(original.name), '200x200')
 
                 self.assertTrue(thumb_url)

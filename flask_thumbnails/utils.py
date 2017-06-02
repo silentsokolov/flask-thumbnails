@@ -33,10 +33,16 @@ def parse_size(size):
         integer_types = (int, long)
     else:
         integer_types = (int,)
-        
+
     if isinstance(size, integer_types):
         # If the size parameter is a single number, assume square aspect.
         return [size, size]
+
+    if isinstance(size, (tuple, list)):
+        if len(size) == 1:
+            # If single value tuple/list is provided, exand it to two elements
+            return size + type(size)(size)
+        return size
 
     thumbnail_size = [int(x) for x in size.split('x')]
 
@@ -45,3 +51,8 @@ def parse_size(size):
         thumbnail_size.append(thumbnail_size[0])
 
     return thumbnail_size
+
+def aspect_to_string(size):
+    if isinstance(size, str):
+        return size
+    return 'x'.join(map(str, size))
