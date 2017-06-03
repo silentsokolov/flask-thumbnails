@@ -53,6 +53,12 @@ def parse_size(size):
     return thumbnail_size
 
 def aspect_to_string(size):
-    if isinstance(size, str):
+    if sys.version_info < (3,):
+        str_type = basestring
+    else:
+        str_type = str
+
+    if isinstance(size, str_type):
         return size
+
     return 'x'.join(map(str, size))
