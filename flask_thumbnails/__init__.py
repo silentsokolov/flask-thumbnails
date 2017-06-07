@@ -14,7 +14,7 @@ except ImportError:
 
 from .utils import import_from_string, generate_filename, parse_size, aspect_to_string
 
-__version__ = '1.0.0'
+__version__ = '1.0.1'
 
 
 class Thumbnail(object):

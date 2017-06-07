@@ -28,6 +28,7 @@ def generate_filename(original_filename, *options):
 
     return name
 
+
 def parse_size(size):
     if sys.version_info < (3,):
         integer_types = (int, long)
@@ -47,13 +48,14 @@ def parse_size(size):
     try:
         thumbnail_size = [int(x) for x in size.lower().split('x', 1)]
     except ValueError:
-        raise ValueError('Bad size format. Valid format is **x**.')
+        raise ValueError('Bad thumbnail size format. Valid format is INTxINT.')
 
     if len(thumbnail_size) == 1:
         # If the size parameter only contains a single integer, assume square aspect.
         thumbnail_size.append(thumbnail_size[0])
 
     return thumbnail_size
+
 
 def aspect_to_string(size):
     if sys.version_info < (3,):

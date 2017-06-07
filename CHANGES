@@ -1,4 +1,8 @@
-1.0.0 (dev)
+1.0.1 (2017-06-07)
+    - Support for single integer size values for square thumbnails
+    - Fix the event someone uses the Thumbnail constructor without passing in the app
+
+1.0.0 (2017-06-07)
     - Add custom thumbnail storage
     - Support python 3.4+
     - Test code
