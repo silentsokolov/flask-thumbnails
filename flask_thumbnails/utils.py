@@ -44,7 +44,10 @@ def parse_size(size):
             return size + type(size)(size)
         return size
 
-    thumbnail_size = [int(x) for x in size.split('x')]
+    try:
+        thumbnail_size = [int(x) for x in size.lower().split('x', 1)]
+    except ValueError:
+        raise ValueError('Bad size format. Valid format is **x**.')
 
     if len(thumbnail_size) == 1:
         # If the size parameter only contains a single integer, assume square aspect.

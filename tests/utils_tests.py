@@ -39,6 +39,12 @@ class UtilsTestCase(unittest.TestCase):
         size = parse_size([200,])
         self.assertEqual(size, [200,200])
 
+        with self.assertRaises(ValueError):
+            parse_size('this_is_invalid')
+
+        with self.assertRaises(ValueError):
+            parse_size('')
+
     def test_aspect_to_string(self):
         size = aspect_to_string('200x200')
         self.assertEqual(size, '200x200')
