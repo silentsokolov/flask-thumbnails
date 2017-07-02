@@ -1,3 +1,6 @@
+1.0.2 (2017-06-07)
+    - Fix "mkdirs" py2/py3 compatibility
+
 1.0.1 (2017-06-07)
     - Support for single integer size values for square thumbnails
     - Fix the event someone uses the Thumbnail constructor without passing in the app
