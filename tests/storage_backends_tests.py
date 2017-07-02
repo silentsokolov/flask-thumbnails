@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 
 import os
+import shutil
 import unittest
 import tempfile
 from io import BytesIO
@@ -34,6 +35,17 @@ class FilesystemStorageBackendTestCase(unittest.TestCase):
         with tempfile.NamedTemporaryFile() as tmp_file:
             self.backend.save(tmp_file.name, b'123')
             self.assertTrue(os.path.exists(tmp_file.name))
+
+    def test_save_with_missing_dir(self):
+        directory = tempfile.mkdtemp()
+        filepath = os.path.join(directory, 'test_dir/more_test_dir', 'img.jpg')
+
+        try:
+            self.assertFalse(os.path.exists(os.path.dirname(filepath)))
+            self.backend.save(filepath, b'123')
+            self.assertTrue(os.path.exists(os.path.dirname(filepath)))
+        finally:
+            shutil.rmtree(directory)
 
     def tearDown(self):
         self.tmp_file.close()

@@ -22,22 +22,22 @@ class UtilsTestCase(unittest.TestCase):
 
     def test_parse_size(self):
         size = parse_size('200x200')
-        self.assertEqual(size, [200,200])
+        self.assertEqual(size, [200, 200])
 
         size = parse_size('200')
-        self.assertEqual(size, [200,200])
+        self.assertEqual(size, [200, 200])
 
         size = parse_size(200)
-        self.assertEqual(size, [200,200])
+        self.assertEqual(size, [200, 200])
 
         size = parse_size((200, 200))
-        self.assertEqual(size, (200,200))
+        self.assertEqual(size, (200, 200))
 
         size = parse_size((200,))
-        self.assertEqual(size, (200,200))
+        self.assertEqual(size, (200, 200))
 
-        size = parse_size([200,])
-        self.assertEqual(size, [200,200])
+        size = parse_size([200, ])
+        self.assertEqual(size, [200, 200])
 
         with self.assertRaises(ValueError):
             parse_size('this_is_invalid')
@@ -49,8 +49,8 @@ class UtilsTestCase(unittest.TestCase):
         size = aspect_to_string('200x200')
         self.assertEqual(size, '200x200')
 
-        size = aspect_to_string([200,200])
+        size = aspect_to_string([200, 200])
         self.assertEqual(size, '200x200')
 
-        size = aspect_to_string((200,200))
+        size = aspect_to_string((200, 200))
         self.assertEqual(size, '200x200')

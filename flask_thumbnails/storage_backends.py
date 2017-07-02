@@ -2,6 +2,7 @@
 
 from __future__ import unicode_literals
 
+import errno
 import os
 
 
@@ -28,8 +29,17 @@ class FilesystemStorageBackend(BaseStorageBackend):
         return os.path.exists(name)
 
     def save(self, filepath, data):
-        if not os.path.exists(os.path.dirname(filepath)):
-            os.makedirs(os.path.dirname(filepath), exist_ok=True)
+        directory = os.path.dirname(filepath)
+
+        if not os.path.exists(directory):
+            try:
+                os.makedirs(directory)
+            except OSError as e:
+                if e.errno != errno.EEXIST:
+                    raise
+
+        if not os.path.isdir(directory):
+            raise IOError('%s is not a directory'.format(directory))
 
         with open(filepath, 'wb') as f:
             f.write(data)
