@@ -14,7 +14,7 @@ except ImportError:
 
 from .utils import import_from_string, generate_filename, parse_size, aspect_to_string
 
-__version__ = '1.0.2'
+__version__ = '1.0.3'
 
 
 class Thumbnail(object):
@@ -117,7 +117,8 @@ class Thumbnail(object):
         # get original image format
         options['format'] = options.get('format', image.format)
 
-        image = self._create_thumbnail(image, thumbnail_size, crop)
+        image = self._create_thumbnail(image, thumbnail_size, crop,
+                                       background=background)
 
         raw_data = self.get_raw_data(image, **options)
         storage.save(thumbnail_filepath, raw_data)
