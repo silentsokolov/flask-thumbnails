@@ -114,6 +114,9 @@ class Thumbnail(object):
             self.app.logger.warning('Thumbnail not load image: %s', original_filepath)
             return thumbnail_url
 
+        # get original image format
+        options['format'] = options.get('format', image.format)
+
         image = self._create_thumbnail(image, thumbnail_size, crop)
 
         raw_data = self.get_raw_data(image, **options)
@@ -133,7 +136,7 @@ class Thumbnail(object):
 
     @staticmethod
     def colormode(image, colormode='RGB'):
-        if colormode == 'RGB':
+        if colormode == 'RGB' or colormode == 'RGBA':
             if image.mode == 'RGBA':
                 return image
             if image.mode == 'LA':
