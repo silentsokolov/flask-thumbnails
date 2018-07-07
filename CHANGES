@@ -1,3 +1,6 @@
+1.0.6 (2018-07-07)
+    - Flask 1.0 compatibility
+
 1.0.4 (2018-04-15)
     - Update setup.py
 

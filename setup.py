@@ -3,11 +3,8 @@
 
 import os
 import re
+from os.path import join, dirname
 from setuptools import setup
-
-
-def read_md(f):
-    return open(f, 'r').read()
 
 
 def get_version(package):
@@ -26,7 +23,7 @@ setup(
     url='https://github.com/silentsokolov/flask-thumbnails',
     license='MIT',
     description='A simple extension to create a thumbs for the Flask',
-    long_description=read_md('README.rst'),
+    long_description=open(join(dirname(__file__), 'README.rst')).read(),
     author='Dmitriy Sokolov',
     author_email='silentsokolov@gmail.com',
     packages=get_packages('flask_thumbnails'),

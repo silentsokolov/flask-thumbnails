@@ -14,6 +14,7 @@ except ImportError:
 
 from .utils import import_from_string, generate_filename, parse_size, aspect_to_string
 
+__author__ = 'Dmitriy Sokolov'
 __version__ = '1.0.5'
 
 

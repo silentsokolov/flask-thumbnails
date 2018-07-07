@@ -10,6 +10,7 @@ env:
   - FLASK="Flask==0.12"
   - FLASK="Flask==0.11"
   - FLASK="Flask==0.10"
+  - FLASK="Flask==1.0"
 
 install:
   - pip install $FLASK
