@@ -1,0 +1,60 @@
+name: "build"
+
+on:
+  pull_request:
+  push:
+    branches: master
+
+jobs:
+  build:
+    name: Python ${{ matrix.python-version }} | Flask ${{ matrix.flask-version }} | Ubuntu
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - python-version: 2.7
+            flask-version: "0.10.*"
+          - python-version: 2.7
+            flask-version: "0.11.*"
+
+          - python-version: 3.6
+            flask-version: "0.12.*"
+          - python-version: 3.6
+            flask-version: "1.0.*"
+          - python-version: 3.6
+            flask-version: "1.1.*"
+
+          - python-version: 3.7
+            flask-version: "1.0.*"
+          - python-version: 3.7
+            flask-version: "1.1.*"
+
+          - python-version: 3.8
+            flask-version: "1.0.*"
+          - python-version: 3.8
+            flask-version: "1.1.*"
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install Flask ${{ matrix.flask-version }}
+      run: |
+        pip install Flask==${{ matrix.flask-version }}
+        pip install pillow
+        pip install codecov
+        pip install mock
+
+    - name: Run tests
+      run: |
+        PYTHONPATH=".:tests:$PYTHONPATH" coverage run --omit='setup.py' --omit='tests/*' --source='.' setup.py test
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
+
