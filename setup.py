@@ -23,6 +23,7 @@ setup(
     url='https://github.com/silentsokolov/flask-thumbnails',
     license='MIT',
     description='A simple extension to create a thumbs for the Flask',
+    long_description_content_type='text/x-rst',
     long_description=open(join(dirname(__file__), 'README.rst')).read(),
     author='Dmitriy Sokolov',
     author_email='silentsokolov@gmail.com',
