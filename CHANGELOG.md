@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [1.0.8] - 2021-05-15
+### Added
+- Flask 2.0 compatibility
+
 ## [1.0.7] - 2020-12-07
 ### Added
 - Flask 1.1 compatibility
@@ -27,7 +31,8 @@
 - Support python 3.4+
 - Test code
 
-[Unreleased]: https://github.com/silentsokolov/flask-thumbnails/compare/v0.1.7...HEAD
+[Unreleased]: https://github.com/silentsokolov/flask-thumbnails/compare/v0.1.8...HEAD
+[0.1.8]: https://github.com/silentsokolov/flask-thumbnails/compare/v0.1.7...v0.1.8
 [0.1.7]: https://github.com/silentsokolov/flask-thumbnails/compare/v0.1.6...v0.1.7
 [0.1.6]: https://github.com/silentsokolov/flask-thumbnails/compare/v0.1.5...v0.1.6
 [0.1.4]: https://github.com/silentsokolov/flask-thumbnails/compare/v0.1.3...v0.1.4
