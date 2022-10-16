@@ -3,7 +3,8 @@
 
 import os
 import re
-from os.path import join, dirname
+from os.path import dirname, join
+
 from setuptools import setup
 
 
