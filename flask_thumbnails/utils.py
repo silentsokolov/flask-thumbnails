@@ -21,7 +21,7 @@ def generate_filename(original_filename, *options, extension=None):
     name, ext = os.path.splitext(original_filename)
     if extension:
         ext = extension
-    return f"{name}_{'_'.join(options)}{ext}"
+    return f"{name}_{'_'.join([str(i) for i in options if i])}.{ext}"
 
 
 def parse_size(size):
