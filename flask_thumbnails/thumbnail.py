@@ -53,7 +53,7 @@ class Thumbnail(object):
         app.config.setdefault(
             "THUMBNAIL_STORAGE_BACKEND", self._default_storage_backend
         )
-        app.config.setdefault("THUMBNAIL_DEFAUL_FORMAT", self._default_format)
+        app.config.setdefault("THUMBNAIL_DEFAULT_FORMAT", self._default_format)
 
         if self._configure_jinja:
             app.jinja_env.filters.update(
@@ -139,8 +139,8 @@ class Thumbnail(object):
         if options.get("format"):
             return options.get("format").lower()
 
-        if self.app.config["THUMBNAIL_DEFAUL_FORMAT"]:
-            return self.app.config["THUMBNAIL_DEFAUL_FORMAT"].lower()
+        if self.app.config["THUMBNAIL_DEFAULT_FORMAT"]:
+            return self.app.config["THUMBNAIL_DEFAULT_FORMAT"].lower()
 
         return image.format
 

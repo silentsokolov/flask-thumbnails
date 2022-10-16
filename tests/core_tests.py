@@ -104,7 +104,7 @@ class CoreTestCase(unittest.TestCase):
         options = {}
         self.assertEqual(
             self.thumbnail._get_format(image, **options),
-            self.app.config["THUMBNAIL_DEFAUL_FORMAT"],
+            self.app.config["THUMBNAIL_DEFAULT_FORMAT"],
         )
 
     def test_get_raw_data(self):
