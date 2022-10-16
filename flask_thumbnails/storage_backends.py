@@ -1,32 +1,33 @@
 # -*- coding: utf-8 -*-
-
-from __future__ import unicode_literals
-
 import errno
 import os
+from abc import ABC, abstractmethod
 
 
-class BaseStorageBackend(object):
+class BaseStorageBackend(ABC):
     def __init__(self, app=None):
         self.app = app
 
+    @abstractmethod
     def read(self, filepath, **kwargs):
         raise NotImplementedError
 
+    @abstractmethod
     def exists(self, filepath):
         raise NotImplementedError
 
+    @abstractmethod
     def save(self, filepath, data):
         raise NotImplementedError
 
 
 class FilesystemStorageBackend(BaseStorageBackend):
-    def read(self, filepath, mode='rb'):
-        with open(filepath, mode) as f:
+    def read(self, filepath, **kwargs):
+        with open(filepath, mode=kwargs.get("mode", "rb")) as f:
             return f.read()
 
-    def exists(self, name):
-        return os.path.exists(name)
+    def exists(self, filepath):
+        return os.path.exists(filepath)
 
     def save(self, filepath, data):
         directory = os.path.dirname(filepath)
@@ -39,7 +40,7 @@ class FilesystemStorageBackend(BaseStorageBackend):
                     raise
 
         if not os.path.isdir(directory):
-            raise IOError('{} is not a directory'.format(directory))
+            raise IOError(f"{directory} is not a directory")
 
-        with open(filepath, 'wb') as f:
+        with open(filepath, "wb") as f:
             f.write(data)
