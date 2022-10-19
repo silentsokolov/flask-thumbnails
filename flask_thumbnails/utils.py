@@ -1,10 +1,5 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import unicode_literals
-
 import importlib
 import os
-import sys
 
 
 def import_from_string(path):
@@ -30,10 +25,7 @@ def generate_filename(original_filename, *options):
 
 
 def parse_size(size):
-    if sys.version_info < (3,):
-        integer_types = (int,)
-    else:
-        integer_types = (int,)
+    integer_types = (int,)
 
     if isinstance(size, integer_types):
         # If the size parameter is a single number, assume square aspect.
@@ -60,10 +52,7 @@ def parse_size(size):
 
 
 def aspect_to_string(size):
-    if sys.version_info < (3,):
-        str_type = basestring  # pylint: disable=undefined-variable
-    else:
-        str_type = str
+    str_type = str
 
     if isinstance(size, str_type):
         return size

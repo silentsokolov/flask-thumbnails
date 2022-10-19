@@ -14,11 +14,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - python-version: 2.7
-            flask-version: "0.10.*"
-          - python-version: 2.7
-            flask-version: "0.11.*"
-
           - python-version: 3.6
             flask-version: "0.12.*"
           - python-version: 3.6
@@ -29,25 +24,25 @@ jobs:
             flask-version: "2.0.*"
 
           - python-version: 3.7
-            flask-version: "1.0.*"
-          - python-version: 3.7
-            flask-version: "1.1.*"
-          - python-version: 3.7
             flask-version: "2.0.*"
+          - python-version: 3.7
+            flask-version: "2.1.*"
+          - python-version: 3.7
+            flask-version: "2.2.*"
 
           - python-version: 3.8
-            flask-version: "1.0.*"
-          - python-version: 3.8
-            flask-version: "1.1.*"
-          - python-version: 3.8
             flask-version: "2.0.*"
+          - python-version: 3.8
+            flask-version: "2.1.*"
+          - python-version: 3.8
+            flask-version: "2.2.*"
 
           - python-version: 3.9
-            flask-version: "1.0.*"
-          - python-version: 3.9
-            flask-version: "1.1.*"
-          - python-version: 3.9
             flask-version: "2.0.*"
+          - python-version: 3.9
+            flask-version: "2.1.*"
+          - python-version: 3.9
+            flask-version: "2.2.*"
             coverage: true
 
     steps:
