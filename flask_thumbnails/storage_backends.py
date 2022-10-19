@@ -10,7 +10,7 @@ class BaseStorageBackend(object):
     def __init__(self, app=None):
         self.app = app
 
-    def read(self, filepath, **kwargs):
+    def read(self, filepath, mode="rb", **kwargs):
         raise NotImplementedError
 
     def exists(self, filepath):
@@ -21,12 +21,12 @@ class BaseStorageBackend(object):
 
 
 class FilesystemStorageBackend(BaseStorageBackend):
-    def read(self, filepath, mode='rb'):
-        with open(filepath, mode) as f:
+    def read(self, filepath, mode="rb", **kwargs):
+        with open(filepath, mode) as f:  # pylint: disable=unspecified-encoding
             return f.read()
 
-    def exists(self, name):
-        return os.path.exists(name)
+    def exists(self, filepath):
+        return os.path.exists(filepath)
 
     def save(self, filepath, data):
         directory = os.path.dirname(filepath)
@@ -39,7 +39,7 @@ class FilesystemStorageBackend(BaseStorageBackend):
                     raise
 
         if not os.path.isdir(directory):
-            raise IOError('{} is not a directory'.format(directory))
+            raise IOError("{} is not a directory".format(directory))
 
-        with open(filepath, 'wb') as f:
+        with open(filepath, "wb") as f:
             f.write(data)

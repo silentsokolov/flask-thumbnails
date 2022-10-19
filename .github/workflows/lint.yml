@@ -1,14 +1,14 @@
 ---
-name: "PyPI Release"
+name: "Lint"
 
 on:  # yamllint disable-line rule:truthy
+  pull_request:
   push:
-    tags:
-      - 'v*'
+    branches: master
 
 jobs:
-  publish:
-    name: PyPI Release
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
 
     steps:
@@ -23,11 +23,8 @@ jobs:
       - name: Upgrade Setuptools
         run: pip install --upgrade setuptools wheel
 
-      - name: Build Distribution
-        run: python setup.py sdist bdist_wheel --universal
+      - name: Install requirements
+        run: pip install -r requirements-dev.txt
 
-      - name: Publish to PyPI
-        uses: pypa/gh-action-pypi-publish@master
-        with:
-          user: __token__
-          password: ${{ secrets.pypi_password }}
+      - name: Run lint
+        run: make lint
