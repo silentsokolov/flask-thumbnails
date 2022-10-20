@@ -1,17 +1,21 @@
 import errno
 import os
+from abc import ABC, abstractmethod
 
 
-class BaseStorageBackend(object):
+class BaseStorageBackend(ABC):
     def __init__(self, app=None):
         self.app = app
 
+    @abstractmethod
     def read(self, filepath, mode="rb", **kwargs):
         raise NotImplementedError
 
+    @abstractmethod
     def exists(self, filepath):
         raise NotImplementedError
 
+    @abstractmethod
     def save(self, filepath, data):
         raise NotImplementedError
 

@@ -25,9 +25,7 @@ def generate_filename(original_filename, *options):
 
 
 def parse_size(size):
-    integer_types = (int,)
-
-    if isinstance(size, integer_types):
+    if isinstance(size, int):
         # If the size parameter is a single number, assume square aspect.
         return [size, size]
 
@@ -52,9 +50,7 @@ def parse_size(size):
 
 
 def aspect_to_string(size):
-    str_type = str
-
-    if isinstance(size, str_type):
+    if isinstance(size, str):
         return size
 
     return "x".join(map(str, size))

@@ -11,7 +11,7 @@ except ImportError:
 from .utils import aspect_to_string, generate_filename, import_from_string, parse_size
 
 
-class Thumbnail(object):
+class Thumbnail:
     def __init__(self, app=None, configure_jinja=True):
         self.app = app
         self._configure_jinja = configure_jinja
@@ -167,10 +167,10 @@ class Thumbnail(object):
 
     def _create_thumbnail(self, image, size, crop="fit", background=None):
         if crop == "fit":
-            image = ImageOps.fit(image, size, Image.ANTIALIAS)
+            image = ImageOps.fit(image, size, Image.Resampling.LANCZOS)
         else:
             image = image.copy()
-            image.thumbnail(size, resample=Image.ANTIALIAS)
+            image.thumbnail(size, resample=Image.Resampling.LANCZOS)
 
         if background is not None:
             image = self.background(image)
