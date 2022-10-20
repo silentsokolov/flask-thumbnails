@@ -166,11 +166,16 @@ class Thumbnail:
         return self.app.config["THUMBNAIL_DEFAULT_FORMAT"]
 
     def _create_thumbnail(self, image, size, crop="fit", background=None):
+        try:
+            resample = Image.Resampling.LANCZOS
+        except AttributeError:  # pylint: disable=raise-missing-from
+            resample = Image.ANTIALIAS
+
         if crop == "fit":
-            image = ImageOps.fit(image, size, Image.Resampling.LANCZOS)
+            image = ImageOps.fit(image, size, resample)
         else:
             image = image.copy()
-            image.thumbnail(size, resample=Image.Resampling.LANCZOS)
+            image.thumbnail(size, resample=resample)
 
         if background is not None:
             image = self.background(image)
