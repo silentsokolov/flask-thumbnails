@@ -171,6 +171,8 @@ class Thumbnail:
         except AttributeError:  # pylint: disable=raise-missing-from
             resample = Image.ANTIALIAS
 
+        image = ImageOps.exif_transpose(image)
+
         if crop == "fit":
             image = ImageOps.fit(image, size, resample)
         else:
