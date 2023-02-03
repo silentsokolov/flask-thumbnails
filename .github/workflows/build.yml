@@ -9,7 +9,7 @@ on:  # yamllint disable-line rule:truthy
 jobs:
   build:
     name: Python ${{ matrix.python-version }} | Flask ${{ matrix.flask-version }} | Ubuntu
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
       matrix:
