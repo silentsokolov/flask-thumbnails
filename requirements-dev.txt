@@ -1,4 +1,4 @@
-Flask==2.0
+Flask==2.3.2
 Pillow==9.3.0
 mock==4.0.3
 black==22.3.0
