@@ -20,7 +20,9 @@ class Thumbnail:
         self._default_root_url = "/"
         self._default_thumbnail_root_url = "/"
         self._default_format = "JPEG"
-        self._default_storage_backend = "flask_thumbnails.storage_backends.FilesystemStorageBackend"
+        self._default_storage_backend = (
+            "flask_thumbnails.storage_backends.FilesystemStorageBackend"
+        )
 
         if app is not None:
             self.init_app(app)
@@ -39,10 +41,16 @@ class Thumbnail:
         app.extensions["thumbnail"] = self
 
         app.config.setdefault("THUMBNAIL_MEDIA_ROOT", self._default_root_directory)
-        app.config.setdefault("THUMBNAIL_MEDIA_THUMBNAIL_ROOT", self._default_thumbnail_directory)
+        app.config.setdefault(
+            "THUMBNAIL_MEDIA_THUMBNAIL_ROOT", self._default_thumbnail_directory
+        )
         app.config.setdefault("THUMBNAIL_MEDIA_URL", self._default_root_url)
-        app.config.setdefault("THUMBNAIL_MEDIA_THUMBNAIL_URL", self._default_thumbnail_root_url)
-        app.config.setdefault("THUMBNAIL_STORAGE_BACKEND", self._default_storage_backend)
+        app.config.setdefault(
+            "THUMBNAIL_MEDIA_THUMBNAIL_URL", self._default_thumbnail_root_url
+        )
+        app.config.setdefault(
+            "THUMBNAIL_STORAGE_BACKEND", self._default_storage_backend
+        )
         app.config.setdefault("THUMBNAIL_DEFAULT_FORMAT", self._default_format)
 
         if self._configure_jinja:
@@ -96,11 +104,15 @@ class Thumbnail:
             original_filename, aspect_to_string(size), crop, background, quality
         )
 
-        original_filepath = os.path.join(self.root_directory, original_path, original_filename)
+        original_filepath = os.path.join(
+            self.root_directory, original_path, original_filename
+        )
         thumbnail_filepath = os.path.join(
             self.thumbnail_directory, original_path, thumbnail_filename
         )
-        thumbnail_url = os.path.join(self.thumbnail_url, original_path, thumbnail_filename)
+        thumbnail_url = os.path.join(
+            self.thumbnail_url, original_path, thumbnail_filename
+        )
 
         if storage.exists(thumbnail_filepath):
             return thumbnail_url
@@ -115,7 +127,9 @@ class Thumbnail:
         # get original image format
         options["format"] = options.get("format", image.format)
 
-        image = self._create_thumbnail(image, thumbnail_size, crop, background=background)
+        image = self._create_thumbnail(
+            image, thumbnail_size, crop, background=background
+        )
 
         raw_data = self.get_raw_data(image, **options)
         storage.save(thumbnail_filepath, raw_data)

@@ -22,6 +22,9 @@ class BaseStorageBackend(ABC):
 
 class FilesystemStorageBackend(BaseStorageBackend):
     def read(self, filepath, mode="rb", **kwargs):
+        if not os.path.exists(filepath):
+            raise IOError("File does not exist: {}".format(filepath))
+
         with open(filepath, mode) as f:  # pylint: disable=unspecified-encoding
             return f.read()
 

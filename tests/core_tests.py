@@ -27,13 +27,17 @@ class CoreTestCase(unittest.TestCase):
         )
 
         self.app.config["THUMBNAIL_MEDIA_ROOT"] = "/tmp/media"
-        self.assertEqual(self.thumbnail.root_directory, self.app.config["THUMBNAIL_MEDIA_ROOT"])
+        self.assertEqual(
+            self.thumbnail.root_directory, self.app.config["THUMBNAIL_MEDIA_ROOT"]
+        )
 
     def test_thumbnail_directory(self):
         self.app.config["THUMBNAIL_MEDIA_THUMBNAIL_ROOT"] = "media"
         self.assertEqual(
             self.thumbnail.thumbnail_directory,
-            os.path.join(self.app.root_path, self.app.config["THUMBNAIL_MEDIA_THUMBNAIL_ROOT"]),
+            os.path.join(
+                self.app.root_path, self.app.config["THUMBNAIL_MEDIA_THUMBNAIL_ROOT"]
+            ),
         )
 
         self.app.config["THUMBNAIL_MEDIA_THUMBNAIL_ROOT"] = "/tmp/media"
@@ -44,7 +48,9 @@ class CoreTestCase(unittest.TestCase):
 
     def test_root_url(self):
         self.app.config["THUMBNAIL_MEDIA_URL"] = "/media"
-        self.assertEqual(self.thumbnail.root_url, self.app.config["THUMBNAIL_MEDIA_URL"])
+        self.assertEqual(
+            self.thumbnail.root_url, self.app.config["THUMBNAIL_MEDIA_URL"]
+        )
 
     def test_thumbnail_url(self):
         self.app.config["THUMBNAIL_MEDIA_THUMBNAIL_URL"] = "/media"
@@ -59,7 +65,9 @@ class CoreTestCase(unittest.TestCase):
         )
 
     def test_get_storage_backend(self):
-        self.assertIsInstance(self.thumbnail.get_storage_backend(), FilesystemStorageBackend)
+        self.assertIsInstance(
+            self.thumbnail.get_storage_backend(), FilesystemStorageBackend
+        )
 
     def test_colormode(self):
         image = Image.new("L", (10, 10))
@@ -90,7 +98,8 @@ class CoreTestCase(unittest.TestCase):
 
         options = {"format": "PNG"}
         self.assertEqual(
-            self.thumbnail._get_format(image, **options), "PNG"  # pylint: disable=protected-access
+            self.thumbnail._get_format(image, **options),
+            "PNG",  # pylint: disable=protected-access
         )
 
         options = {}
@@ -131,11 +140,15 @@ class CoreTestCase(unittest.TestCase):
             with tempfile.NamedTemporaryFile(suffix=".jpg") as thumb:
                 mock_thumb_name.return_value = os.path.basename(thumb.name)
                 self.app.config["THUMBNAIL_MEDIA_ROOT"] = os.path.dirname(original.name)
-                self.app.config["THUMBNAIL_MEDIA_THUMBNAIL_ROOT"] = os.path.dirname(thumb.name)
+                self.app.config["THUMBNAIL_MEDIA_THUMBNAIL_ROOT"] = os.path.dirname(
+                    thumb.name
+                )
 
                 image = Image.new("RGB", (100, 100), "black")
                 image.save(original.name)
 
-                thumb_url = self.thumbnail.get_thumbnail(os.path.basename(original.name), "200x200")
+                thumb_url = self.thumbnail.get_thumbnail(
+                    os.path.basename(original.name), "200x200"
+                )
 
                 self.assertTrue(thumb_url)

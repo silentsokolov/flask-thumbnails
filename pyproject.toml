@@ -14,7 +14,7 @@ skip = '.eggs/,.mypy_cache/,.venv/,venv/,env/,eggs/'
 py-version = 3.9
 
 [tool.pylint.messages-control]
-disable=[
+disable = [
   'C',
   'R',
 

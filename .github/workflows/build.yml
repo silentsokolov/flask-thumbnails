@@ -1,38 +1,24 @@
 ---
 name: "build"
 
-on:  # yamllint disable-line rule:truthy
+on: # yamllint disable-line rule:truthy
   pull_request:
   push:
-    branches: master
+    branches:
+      - master
 
 jobs:
   build:
     name: Python ${{ matrix.python-version }} | Flask ${{ matrix.flask-version }} | Ubuntu
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
         include:
-          - python-version: 3.6
-            flask-version: "0.12.*"
-          - python-version: 3.6
-            flask-version: "1.0.*"
-          - python-version: 3.6
-            flask-version: "1.1.*"
-          - python-version: 3.6
-            flask-version: "2.0.*"
-
-          - python-version: 3.7
-            flask-version: "2.0.*"
-          - python-version: 3.7
-            flask-version: "2.1.*"
-          - python-version: 3.7
-            flask-version: "2.2.*"
-
           - python-version: 3.8
             flask-version: "2.2.*"
-
+          - python-version: 3.9
+            flask-version: "2.2.*"
           - python-version: 3.9
             flask-version: "2.2.*"
             coverage: true
