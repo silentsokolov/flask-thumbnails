@@ -1,4 +1,4 @@
-.. image:: https://github.com/silentsokolov/flask-thumbnails/workflows/build/badge.svg?branch=master
+.. image:: https://github.com/silentsokolov/flask-thumbnails/actions/workflows/build.yml/badge.svg
    :target: https://github.com/silentsokolov/flask-thumbnails/actions?query=workflow%3Abuild+branch%3Amaster
 
 .. image:: https://codecov.io/gh/silentsokolov/flask-thumbnails/branch/master/graph/badge.svg
