@@ -11,7 +11,7 @@ skip = '.eggs/,.mypy_cache/,.venv/,venv/,env/,eggs/'
 
 [tool.pylint]
 [tool.pylint.master]
-py-version = 3.9
+py-version = 3.11
 
 [tool.pylint.messages-control]
 disable = [
@@ -34,3 +34,23 @@ disable = [
   'too-many-arguments',
   'duplicate-code',
 ]
+
+[tool.ruff]
+exclude = [
+  '.git',
+  '.eggs',
+  '.mypy_cache',
+  '.ruff_cache',
+  '.venv',
+  'venv',
+  'dist',
+  '_build',
+  'build',
+]
+
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.format]
+indent-style = "space"
+docstring-code-format = true

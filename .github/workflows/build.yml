@@ -19,7 +19,9 @@ jobs:
             flask-version: "2.3.*"
           - python-version: 3.9
             flask-version: "2.3.*"
-          - python-version: 3.9
+          - python-version: 3.10
+            flask-version: "2.3.*"
+          - python-version: 3.11
             flask-version: "2.3.*"
             coverage: true
 
