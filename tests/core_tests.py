@@ -90,8 +90,8 @@ class CoreTestCase(unittest.TestCase):
 
         options = {"format": "PNG"}
         self.assertEqual(
-            self.thumbnail._get_format(image, **options),
-            "PNG",  # pylint: disable=protected-access
+            self.thumbnail._get_format(image, **options),  # pylint: disable=protected-access
+            "PNG",
         )
 
         options = {}
