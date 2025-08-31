@@ -16,11 +16,11 @@ jobs:
       matrix:
         include:
           - python-version: 3.8
-            flask-version: "2.2.*"
+            flask-version: "2.3.*"
           - python-version: 3.9
-            flask-version: "2.2.*"
+            flask-version: "2.3.*"
           - python-version: 3.9
-            flask-version: "2.2.*"
+            flask-version: "2.3.*"
             coverage: true
 
     steps:
